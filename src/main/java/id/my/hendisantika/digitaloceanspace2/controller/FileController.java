@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,5 +51,16 @@ public class FileController {
     @GetMapping("/list")
     public ResponseEntity<?> listFiles() {
         return new ResponseEntity<>(spaceService.listFiles().contents(), HttpStatus.OK);
+    }
+
+    // Download file
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) {
+        try {
+            byte[] fileBytes = spaceService.downloadFile(fileName);
+            return ResponseEntity.ok(fileBytes);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
