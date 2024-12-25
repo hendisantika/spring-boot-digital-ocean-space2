@@ -66,4 +66,14 @@ public class DigitalOceanSpaceService {
 
         return s3Client.listObjectsV2(listObjects);
     }
+
+    // Download file
+    public byte[] downloadFile(String fileName) {
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+
+        return s3Client.getObject(getObjectRequest).readAllBytes();
+    }
 }
