@@ -4,7 +4,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -68,12 +76,30 @@ public class DigitalOceanSpaceService {
     }
 
     // Download file
-    public byte[] downloadFile(String fileName) {
+    public byte[] downloadFile(String fileName) throws IOException {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fileName)
                 .build();
 
-        return s3Client.getObject(getObjectRequest).readAllBytes();
+        try {
+            return s3Client.getObject(getObjectRequest).readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AwsServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Delete file
+    public void deleteFile(String fileName) {
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+
+        s3Client.deleteObject(deleteObjectRequest);
     }
 }
