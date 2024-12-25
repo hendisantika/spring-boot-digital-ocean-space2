@@ -4,6 +4,7 @@ import id.my.hendisantika.digitaloceanspace2.service.DigitalOceanSpaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,5 +44,11 @@ public class FileController {
         } catch (IOException e) {
             return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // List files
+    @GetMapping("/list")
+    public ResponseEntity<?> listFiles() {
+        return new ResponseEntity<>(spaceService.listFiles().contents(), HttpStatus.OK);
     }
 }
