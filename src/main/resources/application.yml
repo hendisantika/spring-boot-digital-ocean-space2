@@ -1,0 +1,6 @@
+spring.application.name: spring-boot-digital-ocean-space2
+do.space:
+  access-key: your-access-key
+  secret-key: your-secret-key
+  endpoint: https://nyc3.digitaloceanspaces.com
+  bucket-name: your-space-name
