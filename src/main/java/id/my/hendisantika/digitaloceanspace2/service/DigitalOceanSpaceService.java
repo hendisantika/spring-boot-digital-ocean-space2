@@ -57,4 +57,13 @@ public class DigitalOceanSpaceService {
         s3Client.putObject(putObjectRequest, filePath);
         return fileName;
     }
+
+    // List files in Space
+    public ListObjectsV2Response listFiles() {
+        ListObjectsV2Request listObjects = ListObjectsV2Request.builder()
+                .bucket(bucketName)
+                .build();
+
+        return s3Client.listObjectsV2(listObjects);
+    }
 }
