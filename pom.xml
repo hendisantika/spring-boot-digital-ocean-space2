@@ -13,28 +13,21 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-digital-ocean-space2</name>
     <description>spring-boot-digital-ocean-space2</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <properties>
         <java.version>23</java.version>
     </properties>
     <dependencies>
+        <!-- AWS SDK for S3 (Compatible with DigitalOcean Spaces) -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.29.39</version>
+        </dependency>
+        <!-- Spring Boot starter web for REST API -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
