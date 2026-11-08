@@ -33,19 +33,13 @@ public class DigitalOceanSpaceService {
 
     private final S3Client s3Client;
 
-    @Value("${do.space.access-key}")
-    private String accessKey;
+    private final String bucketName;
 
-    @Value("${do.space.secret-key}")
-    private String secretKey;
-
-    @Value("${do.space.endpoint}")
-    private String endpoint;
-
-    @Value("${do.space.bucket-name}")
-    private String bucketName;
-
-    public DigitalOceanSpaceService() {
+    public DigitalOceanSpaceService(@Value("${do.space.access-key}") String accessKey,
+                                    @Value("${do.space.secret-key}") String secretKey,
+                                    @Value("${do.space.endpoint}") String endpoint,
+                                    @Value("${do.space.bucket-name}") String bucketName) {
+        this.bucketName = bucketName;
         AwsBasicCredentials awsCreds = AwsBasicCredentials.create(accessKey, secretKey);
         this.s3Client = S3Client.builder()
                 .region(Region.of("ap-southeast-1"))  // Use your space's region
