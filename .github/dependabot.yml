@@ -1,13 +1,72 @@
+# Dependabot configuration
+# Docs: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 version: 2
 updates:
+  # ---------------------------------------------------------------------------
+  # Maven dependencies (pom.xml)
+  # ---------------------------------------------------------------------------
   - package-ecosystem: maven
     directory: "/"
     schedule:
       interval: daily
-      time: '05:00'
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
-  - package-ecosystem: "github-actions"
+    target-branch: main
+    assignees:
+      - hendisantika
+    labels:
+      - dependencies
+      - java
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: scope
+    # Wait a few days after a release before proposing it (avoids broken / yanked releases)
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+    groups:
+      # Spring Boot parent & starters move together
+      spring-boot:
+        patterns:
+          - "org.springframework.boot:*"
+          - "org.springframework:*"
+      # AWS SDK v2 releases almost daily -> one PR instead of many
+      aws-sdk:
+        patterns:
+          - "software.amazon.awssdk:*"
+      # Everything else (Lombok, test libs, plugins): only minor/patch grouped
+      maven-minor-patch:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "org.springframework.boot:*"
+          - "org.springframework:*"
+          - "software.amazon.awssdk:*"
+        update-types:
+          - minor
+          - patch
+
+  # ---------------------------------------------------------------------------
+  # GitHub Actions (.github/workflows/*.yml)
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    assignees:
+      - hendisantika
+    labels:
+      - dependencies
+      - github_actions
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
