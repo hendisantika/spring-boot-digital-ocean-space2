@@ -14,7 +14,7 @@
     <name>spring-boot-digital-ocean-space2</name>
     <description>spring-boot-digital-ocean-space2</description>
     <properties>
-        <java.version>23</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <!-- AWS SDK for S3 (Compatible with DigitalOcean Spaces) -->
